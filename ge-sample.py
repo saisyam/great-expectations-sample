@@ -5,10 +5,11 @@ from great_expectations.core.expectation_configuration import ExpectationConfigu
 from great_expectations.core.batch import RuntimeBatchRequest
 import pandas as pd
 
+STORE_FOLDER = "/Users/saisyam/work/github/great-expectations-sample/ge_data"
 #Setup data config
 data_context_config  = DataContextConfig(
     datasources = {},
-    store_backend_defaults = FilesystemStoreBackendDefaults(root_directory="/Users/saisyam/work/github/great-expectations-sample/ge_data")
+    store_backend_defaults = FilesystemStoreBackendDefaults(root_directory=STORE_FOLDER)
 )
 
 context = BaseDataContext(project_config = data_context_config)
