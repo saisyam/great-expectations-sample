@@ -7,11 +7,57 @@ import pandas as pd
 
 STORE_FOLDER = "/Users/saisyam/work/github/great-expectations-sample/ge_data"
 #Setup data config
-data_context_config  = DataContextConfig(
+data_context_config = DataContextConfig(
+    config_version = 3,
+    plugins_directory = None,
+    config_variables_file_path = None,
     datasources = {},
-    store_backend_defaults = FilesystemStoreBackendDefaults(root_directory=STORE_FOLDER)
+    stores = {
+        "expectations_store": {
+            "class_name": "ExpectationsStore",
+            "store_backend": {
+                "class_name": "TupleFilesystemStoreBackend",
+                "base_directory": STORE_FOLDER+"/expectations"
+            }
+        },
+        "validations_store": {
+            "class_name": "ValidationsStore",
+            "store_backend": {
+                "class_name": "TupleFilesystemStoreBackend",
+                "base_directory": STORE_FOLDER+"/validations"
+            }
+        },
+        "checkpoint_store": {
+            "class_name": "CheckpointStore",
+            "store_backend": {
+                "class_name": "TupleFilesystemStoreBackend",
+                "base_directory": STORE_FOLDER+"/checkpoints"
+            }
+        },
+        "evaluation_parameter_store": {"class_name":"EvaluationParameterStore"}
+    },
+    expectations_store_name = "expectations_store",
+    validations_store_name = "validations_store",
+    evaluation_parameter_store_name = "evaluation_parameter_store",
+    checkpoint_store_name = "checkpoint_store",
+    data_docs_sites={
+        "local_site": {
+            "class_name": "SiteBuilder",
+            "store_backend": {
+                "class_name": "TupleFilesystemStoreBackend",
+                "base_directory": STORE_FOLDER+"/data_docs",
+                
+            },
+            "site_index_builder": {
+                "class_name": "DefaultSiteIndexBuilder",
+                "show_cta_footer": True,
+            },
+        }
+    },
+    anonymous_usage_statistics={
+      "enabled": True
+    }
 )
-
 context = BaseDataContext(project_config = data_context_config)
 
 # Setup datasource config
@@ -40,7 +86,7 @@ expectation_config_1 = ExpectationConfiguration(
     expectation_type="expect_column_values_to_be_in_set",
     kwargs={
         "column": "product_group",
-        "value_set": ["PG1", "PG2", "PG3", "PG4", "PG5", "PG6"]
+        "value_set": ["PG1", "PG2", "PG3", "PG4", "PG5"]
     }
 ) 
 suite.add_expectation(expectation_configuration=expectation_config_1)
