@@ -5,7 +5,7 @@ from great_expectations.core.expectation_configuration import ExpectationConfigu
 from great_expectations.core.batch import RuntimeBatchRequest
 import pandas as pd
 
-STORE_FOLDER = "/Users/saisyam/work/github/great-expectations-sample/ge_data"
+STORE_FOLDER = "/home/saisyam/work/github/great-expectations-sample/ge_data"
 #Setup data config
 data_context_config = DataContextConfig(
     config_version = 3,
@@ -80,7 +80,7 @@ datasource_config = {
 context.add_datasource(**datasource_config)
 
 # Create expectations suite and add expectations
-suite = context.create_expectation_suite(expectation_suite_name="sales_suite", overwrite_existing=True)
+suite = context.add_expectation_suite(expectation_suite_name="sales_suite")
 
 expectation_config_1 = ExpectationConfiguration(
     expectation_type="expect_column_values_to_be_in_set",
